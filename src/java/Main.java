@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        List<String> bigArray = getWordsFromFile("C:/Users/Olimpia/Documents/Visual Studio 2019/javaProjects/BigProject2/BigProject2Trees/latarnik.txt");
+        List<String> bigArray = getWordsFromFile("src/resources/latarnik.txt");
 
         BST treeBST = new BST();
         BST treeSplay = new Splay();
