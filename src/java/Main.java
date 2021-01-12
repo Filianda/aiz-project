@@ -34,9 +34,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //wypisz drzewo
-           tree.add("kaczka");
-           
     }
 
     public static long fillTreeWithWordsAndMeasureTime(BST tree, List<String> bigArray) {

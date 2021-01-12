@@ -7,7 +7,7 @@ public class BST {
     }
 
     public void add(String word) {
-        add(root, word);
+        root = add(root, word);
     }
 
     Node add(Node current, String word) {
@@ -25,7 +25,6 @@ public class BST {
             return current;
         }
         
-
         return current;
     }
 
@@ -48,14 +47,31 @@ public class BST {
         return root;
     }
 
+    public int getNumberOfNodes() {
+        return getNumberOfNodes(root);
+    }
+
+    private int getNumberOfNodes(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        if (node.isLeaf()) {
+            return 1;
+        }
+        return getNumberOfNodes(node.getLeft()) + getNumberOfNodes(node.getRight()) + 1;
+    }
+
     // liczenie wysokości drzewa
     public int measureDeepestBranch() {
         return measureDeepestBranch(root);
     }
 
     protected int measureDeepestBranch(Node node) {
-        if (node == null || node.ifLeaf()) {
+        if (node == null) {
             return 0;
+        }
+        if (node.isLeaf()) {
+            return 1;
         }
         int leftChildDepth = measureDeepestBranch(node.getLeft());
         int rightChildDepth = measureDeepestBranch(node.getRight());

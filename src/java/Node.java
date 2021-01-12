@@ -16,7 +16,7 @@ public class Node {
         this.counter++;
     }
 
-    public boolean ifLeaf() {
+    public boolean isLeaf() {
         return (left == null && right == null);
     }
 
