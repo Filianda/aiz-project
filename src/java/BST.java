@@ -28,19 +28,19 @@ public class BST {
         return current;
     }
 
-    private boolean contains(Node current, String word) {
+    private int contains(Node current, String word) {
         if (current == null) {
-            return false;
+            return 0;
         } 
         if (word.equals(current.getWord())) {
-            return true;
+            return 1;
         } 
         int compare = word.compareTo(current.getWord());
         return compare < 0 ? contains(current.getLeft(), word) : contains(current.getRight(), word);
     }
 
     public boolean contains(String word) {
-        return contains(root, word);
+        return (contains(root, word) == 1);
     }
 
     public Node getRoot() {
