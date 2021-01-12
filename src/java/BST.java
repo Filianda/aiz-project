@@ -36,11 +36,11 @@ public class BST {
             return 1;
         } 
         int compare = word.compareTo(current.getWord());
-        return compare < 0 ? contains(current.getLeft(), word) : contains(current.getRight(), word);
+        return compare < 0 ? contains(current.getLeft(), word) + 1 : contains(current.getRight(), word) + 1;
     }
 
     public boolean contains(String word) {
-        return (contains(root, word) == 1);
+        return (contains(root, word) > 0);
     }
 
     public Node getRoot() {
