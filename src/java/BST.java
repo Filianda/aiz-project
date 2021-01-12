@@ -43,6 +43,17 @@ public class BST {
         return (contains(root, word) > 0);
     }
 
+    /**
+     * This method returns number of operations needed
+     * to search a given word. If the word is not present
+     * in the tree returned value is 0.
+     *
+     * @param word word to be calculated
+     */
+    public int getLevel(String word) {
+        return contains(root, word);
+    }
+
     public Node getRoot() {
         return root;
     }

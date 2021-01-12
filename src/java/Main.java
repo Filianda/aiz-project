@@ -25,10 +25,13 @@ public class Main {
             resultsFileWriter.write(String.format("time of build;dapth Of tree\n"));
             resultsFileWriter.write(String.format("%d;%d\n", timeOfBuild, depthOfTree));
             resultsFileWriter.write(String.format("time of search\n"));
-            for (int i = 0; i < 10; i++) {
-                List <String> list = generateListOf100RandomElements(bigArray, bigArray.size(), 1);
-                long timeOfSearch = findAndMeasureExecutionSearchTime(list, tree);
-                resultsFileWriter.write(String.format("%d\n", timeOfSearch));
+
+            List <String> list = generateListOf100RandomElements(bigArray);
+            for (String word : list) {
+                long startTime = System.currentTimeMillis();
+                int level = findWordAndReturnItsLevel(word, tree);
+                long stopTime = System.currentTimeMillis();
+                resultsFileWriter.write(String.format("%s;%d;%d\n", word, stopTime - startTime, level));
             }
             resultsFileWriter.close();
         } catch (IOException e) {
@@ -54,7 +57,9 @@ public class Main {
                 String line = myReader.nextLine();
                 String[] words = line.replaceAll("[^a-zA-Z \u0100-\u01ff]", "").split(" ");
                 for (String word : words) {
-                    bigArray.add(word);
+                    if (!word.trim().isEmpty()) {
+                        bigArray.add(word);
+                    }
                 }
             }
             myReader.close();
@@ -69,11 +74,10 @@ public class Main {
         return (int) ((Math.random() * (upperBoundary - lowerBoundary)) + lowerBoundary);
     }
 
-    public static List<String> generateListOf100RandomElements(List<String> bigArray, int upperBoundary,
-            int lowerBoundary) {
+    public static List<String> generateListOf100RandomElements(List<String> bigArray) {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            list.add(bigArray.get(getRandomNumber(lowerBoundary, upperBoundary)));
+            list.add(bigArray.get(getRandomNumber(0, bigArray.size())));
         }
         return list;
     }
@@ -85,6 +89,10 @@ public class Main {
         }
         long stopTime = System.currentTimeMillis();
         return stopTime - startTime;
+    }
+
+    public static int findWordAndReturnItsLevel(String word, BST tree) {
+        return tree.getLevel(word);
     }
 }
 
