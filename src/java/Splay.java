@@ -1,10 +1,8 @@
 public class Splay extends BST {
 
-    private SplayNode root;
-
     @Override
     public void add(String word) {
-        SplayNode newNode = add(root, root, word);
+        SplayNode newNode = add((SplayNode)root, (SplayNode)root, word);
         if (root == null) {
             root = newNode;
         } else {

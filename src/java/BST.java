@@ -1,6 +1,6 @@
 public class BST {
     
-    private Node root;
+    Node root;
 
     public BST() {
         this.root = null;
