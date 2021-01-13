@@ -14,7 +14,9 @@ public class SplayNode extends Node {
     @Override
     public void setLeft(Node left) {
         super.setLeft(left);
-        ((SplayNode) left).setParent(this);
+        if (left != null) {
+            ((SplayNode) left).setParent(this);
+        }
     }
 
     @Override
@@ -25,7 +27,9 @@ public class SplayNode extends Node {
     @Override
     public void setRight(Node right) {
         super.setRight(right);
-        ((SplayNode) right).setParent(this);
+        if (right != null) {
+            ((SplayNode) right).setParent(this);
+        }
     }
     
     public SplayNode getParent() {

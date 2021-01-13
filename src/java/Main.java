@@ -14,7 +14,7 @@ public class Main {
         BST treeSplay = new Splay();
         BST treeAVL = new AVL();
         
-        BST tree = treeBST;
+        BST tree = treeSplay;
 
         long timeOfBuild = fillTreeWithWordsAndMeasureTime(tree, bigArray);
         int depthOfTree = tree.measureDeepestBranch();
@@ -55,7 +55,7 @@ public class Main {
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 String line = myReader.nextLine();
-                String[] words = line.replaceAll("[^a-zA-Z \u0100-\u01ff]", "").split(" ");
+                String[] words = line.replaceAll("[^a-zA-Z \u0100-\u01ff]", "").toLowerCase().split(" ");
                 for (String word : words) {
                     if (!word.trim().isEmpty()) {
                         bigArray.add(word);

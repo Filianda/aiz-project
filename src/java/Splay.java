@@ -93,6 +93,7 @@ public class Splay extends BST {
             parent.setRight(child.getLeft());
             child.setLeft(parent);
         }
+        child.setParent(grandparent);
     }
 }
 
