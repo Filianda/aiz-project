@@ -4,9 +4,11 @@ public class Splay extends BST {
 
     @Override
     public void add(String word) {
-        SplayNode node = add(root, root, word);
-        if (node != null) {
-            splay(node);
+        SplayNode newNode = add(root, root, word);
+        if (root == null) {
+            root = newNode;
+        } else {
+            splay(newNode);
         }
     }
 
@@ -15,19 +17,25 @@ public class Splay extends BST {
             return new SplayNode(word, parent);
         }
 
-        SplayNode newNode;
         int compare = word.compareTo(current.getWord());
         if (compare < 0) { // word is smaller than current.word
-            newNode = add(current.getLeft(), current, word);
-            current.setLeft(newNode);
+            if (current.getLeft() != null) {
+                return add(current.getLeft(), current, word);
+            } else {
+                current.setLeft(new SplayNode(word, current));
+                return current.getLeft();
+            }
         } else if (compare > 0) { // word is greater than current.word
-            newNode = add(current.getRight(), current, word);
-            current.setRight(newNode);
+            if (current.getRight() != null) {
+                return add(current.getRight(), current, word);
+            } else {
+                current.setRight(new SplayNode(word, current));
+                return current.getRight();
+            }
         } else {
-            newNode = null;
             current.incrementCounter();
+            return current;
         }
-        return newNode;
     }
 
     /**
