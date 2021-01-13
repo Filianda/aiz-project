@@ -14,7 +14,7 @@ public class Main {
         BST treeSplay = new Splay();
         BST treeAVL = new AVL();
         
-        BST tree = treeSplay;
+        BST tree = treeAVL;
 
         long timeOfBuild = fillTreeWithWordsAndMeasureTime(tree, bigArray);
         int depthOfTree = tree.measureDeepestBranch();

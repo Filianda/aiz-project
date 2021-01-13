@@ -36,8 +36,30 @@ public class SplayNode extends Node {
         return (SplayNode) parent;
     }
 
+    public SplayNode getGrandparent() {
+        if (parent == null) {
+            return null;
+        } else {
+            return ((SplayNode)parent).getParent();
+        }
+    }
+
     public void setParent(Node parent) {
         this.parent = parent;
+    }
+
+    public boolean isLeftChild() {
+        if (parent == null) {
+            return false;
+        }
+        return parent.getLeft() == this;
+    }
+
+    public boolean isRightChild() {
+        if (parent == null) {
+            return false;
+        }
+        return parent.getRight() == this;
     }
 }
 

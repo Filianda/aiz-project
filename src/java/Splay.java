@@ -2,15 +2,19 @@ public class Splay extends BST {
 
     @Override
     public void add(String word) {
-        SplayNode newNode = add((SplayNode)root, (SplayNode)root, word);
-        if (root == null) {
-            root = newNode;
-        } else {
-            splay(newNode);
-        }
+        SplayNode newNode = addNode(word);
+        splay(newNode);
     }
 
-    private SplayNode add(SplayNode current, SplayNode parent, String word) {
+    SplayNode addNode(String word) {
+        SplayNode newNode = addNode((SplayNode)root, (SplayNode)root, word);
+        if (root == null) {
+            root = newNode;
+        }
+        return newNode;
+    }
+
+    private SplayNode addNode(SplayNode current, SplayNode parent, String word) {
         if (current == null) {
             return new SplayNode(word, parent);
         }
@@ -18,14 +22,14 @@ public class Splay extends BST {
         int compare = word.compareTo(current.getWord());
         if (compare < 0) { // word is smaller than current.word
             if (current.getLeft() != null) {
-                return add(current.getLeft(), current, word);
+                return addNode(current.getLeft(), current, word);
             } else {
                 current.setLeft(new SplayNode(word, current));
                 return current.getLeft();
             }
         } else if (compare > 0) { // word is greater than current.word
             if (current.getRight() != null) {
-                return add(current.getRight(), current, word);
+                return addNode(current.getRight(), current, word);
             } else {
                 current.setRight(new SplayNode(word, current));
                 return current.getRight();
@@ -40,6 +44,9 @@ public class Splay extends BST {
      * Moves node to the top of the tree (to become a new root).
      */
     private void splay(SplayNode node) {
+        if (node == null) {
+            return; // do nothing
+        }
         try {
             while (root != node) {
                 rotate(node.getParent(), node);
@@ -62,7 +69,7 @@ public class Splay extends BST {
      *         C   E                A   C
      * 
      */
-    private void rotate(SplayNode parent, SplayNode child) throws Exception {
+    void rotate(SplayNode parent, SplayNode child) throws Exception {
         // STEP 1. VALIDATE ARGUMENTS
         if (parent == null || child == null) {
             return;
@@ -87,7 +94,7 @@ public class Splay extends BST {
         if (parent.getLeft() == child) {
             parent.setLeft(child.getRight());
             child.setRight(parent);
-        } else{
+        } else {
             parent.setRight(child.getLeft());
             child.setLeft(parent);
         }
