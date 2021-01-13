@@ -7,7 +7,10 @@ public class BST {
     }
 
     public void add(String word) {
-        root = add(root, word);
+        Node newNode = add(root, word);
+        if (root == null) {
+            root = newNode;
+        }
     }
 
     Node add(Node current, String word) {
@@ -17,15 +20,23 @@ public class BST {
         
         int compare = word.compareTo(current.getWord());
         if (compare < 0) { // word is smaller than current.word
-            current.setLeft(add(current.getLeft(), word));
+            if (current.getLeft() != null) {
+                return add(current.getLeft(), word);
+            } else {
+                current.setLeft(new Node(word));
+                return current.getLeft();
+            }
         } else if (compare > 0) { // word is greater than current.word
-            current.setRight(add(current.getRight(), word));
-        } else {
+            if (current.getRight() != null) {
+                return add(current.getRight(), word);
+            } else {
+                current.setRight(new Node(word));
+                return current.getRight();
+            }
+        } else { // word is equal to current.word
             current.incrementCounter();
             return current;
         }
-        
-        return current;
     }
 
     private int contains(Node current, String word) {
