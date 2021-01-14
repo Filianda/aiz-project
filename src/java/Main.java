@@ -2,36 +2,57 @@ import java.io.File; // Import the File class
 import java.io.FileNotFoundException; // Import this class to handle errors
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner; // Import the Scanner class to read text files
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        List<String> bigArray = getWordsFromFile("src/resources/latarnik.txt");
+        String book1 = new String("src/resources/DzieckoPrzezPtakaPrzyniesione.txt");
+        String book2 = new String("src/resources/golem.txt");
+        String book3 = new String("src/resources/jaszczor.txt");
+        String book4 = new String("src/resources/lalka1.txt");
+        String book5 = new String("src/resources/lalka2.txt");
+        String book6 = new String("src/resources/latarnik.txt");
+        String book7 = new String("src/resources/plominie.txt");
+        String book8 = new String("src/resources/salamandra.txt");
+        String book9 = new String("src/resources/tajemniczyOgrod.txt");
+        String book10 = new String("src/resources/zloteSidla.txt");
+
+        List<String> bigArray = getWordsFromFile(book3);
 
         BST treeBST = new BST();
         BST treeSplay = new Splay();
         BST treeAVL = new AVL();
         
-        BST tree = treeAVL;
+        long timeOfBuildBST = fillTreeWithWordsAndMeasureTime(treeBST, bigArray);
+        long timeOfBuildSplay = fillTreeWithWordsAndMeasureTime(treeSplay, bigArray);
+        long timeOfBuildAVL = fillTreeWithWordsAndMeasureTime(treeAVL, bigArray);
 
-        long timeOfBuild = fillTreeWithWordsAndMeasureTime(tree, bigArray);
-        int depthOfTree = tree.measureDeepestBranch();
+        int depthOfTreeBST = treeBST.measureDeepestBranch();
+        int depthOfTreeSplay = treeSplay.measureDeepestBranch();
+        int depthOfTreeAVL = treeAVL.measureDeepestBranch();
         
         FileWriter resultsFileWriter;
         try {
             resultsFileWriter = new FileWriter("wyniki-pomiarow.csv");
-            resultsFileWriter.write(String.format("time of build;dapth Of tree\n"));
-            resultsFileWriter.write(String.format("%d;%d\n", timeOfBuild, depthOfTree));
-            resultsFileWriter.write(String.format("time of search\n"));
 
-            List <String> list = generateListOf100RandomElements(bigArray);
-            for (String word : list) {
-                long startTime = System.currentTimeMillis();
-                int level = findWordAndReturnItsLevel(word, tree);
-                long stopTime = System.currentTimeMillis();
-                resultsFileWriter.write(String.format("%s;%d;%d\n", word, stopTime - startTime, level));
+            resultsFileWriter.write(String.format("tree;time of build;height Of tree\n"));
+            resultsFileWriter.write(String.format("BST;%d;%d\n", timeOfBuildBST, depthOfTreeBST));
+            resultsFileWriter.write(String.format("Splay;%d;%d\n", timeOfBuildSplay, depthOfTreeSplay));
+            resultsFileWriter.write(String.format("AVL;%d;%d\n", timeOfBuildAVL, depthOfTreeAVL));
+
+            resultsFileWriter.write(String.format("time of search\n"));
+            resultsFileWriter.write(String.format("word;BST level;BST time;Splay level;Splay time;AVL level; AVL time\n"));
+
+            for (String word : generateListOf100RandomElements(bigArray)) {
+                List<String> row = new ArrayList<String>();
+                row.add(word);
+                findWordWithTimeMeasurmentAndAddResultsToList(treeBST, word, row);
+                findWordWithTimeMeasurmentAndAddResultsToList(treeSplay, word, row);
+                findWordWithTimeMeasurmentAndAddResultsToList(treeAVL, word, row);
+                resultsFileWriter.write(String.join(";", row) + "\n");
             }
             resultsFileWriter.close();
         } catch (IOException e) {
@@ -39,12 +60,21 @@ public class Main {
         }
     }
 
+    private static void findWordWithTimeMeasurmentAndAddResultsToList(BST tree, String word, List<String> list) throws IOException {
+        long startTime = System.nanoTime();
+        int level = findWordAndReturnItsLevel(word, tree);
+        long stopTime = System.nanoTime();
+
+        list.add(Integer.toString(level));
+        list.add(Long.toString(stopTime - startTime));
+    }
+
     public static long fillTreeWithWordsAndMeasureTime(BST tree, List<String> bigArray) {
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
         for (int i = 0; i < bigArray.size(); i++) {
             tree.add(bigArray.get(i));
         }
-        long stopTime = System.currentTimeMillis();
+        long stopTime = System.nanoTime();
         return stopTime - startTime;
     }
 
@@ -80,15 +110,6 @@ public class Main {
             list.add(bigArray.get(getRandomNumber(0, bigArray.size())));
         }
         return list;
-    }
-
-    public static long findAndMeasureExecutionSearchTime(List<String> list, BST tree) {
-        long startTime = System.currentTimeMillis();
-        for (int i = 0; i < list.size(); i++) {
-            tree.contains(list.get(i)); 
-        }
-        long stopTime = System.currentTimeMillis();
-        return stopTime - startTime;
     }
 
     public static int findWordAndReturnItsLevel(String word, BST tree) {
